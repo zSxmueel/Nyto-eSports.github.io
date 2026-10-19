@@ -202,7 +202,10 @@
     .team-name-text.right { text-align: left; }
     .match-score-badge { font-family: 'Teko', sans-serif; font-size: 1.2rem; color: var(--primary-soft); background: rgba(0,0,0,0.4); padding: 0.15rem 0.6rem; border-radius: 4px; border: 1px solid var(--border-color); line-height: 1; flex-shrink: 0; }
     .match-led { width: 8px; height: 8px; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px currentColor; flex-shrink: 0; }
-    .led-blue { color: #00bfff; background-color: #00bfff; }
+    .led-blue { color: #00bfff; background-color: #00bfff; }   /* pendiente */
+    .led-green { color: #22d65a; background-color: #22d65a; }  /* victoria */
+    .led-orange { color: #ff9f1a; background-color: #ff9f1a; } /* empate */
+    .led-red { color: #ff1a2a; background-color: #ff1a2a; }    /* derrota */
     .match-status-row { display: flex; align-items: center; gap: 0.4rem; }
     .league-empty-notice { font-size: 0.85rem; color: var(--text-muted); text-align: center; padding: 2.5rem 1rem; background: #141722; border-radius: 8px; border: 1px dashed var(--border-color); }
 
@@ -518,7 +521,9 @@
 
     <!-- CLASIFICACIÓN (CARGA DINÁMICA DESDE JSON CON FALLBACK) -->
     <div id="standings" class="tab-content">
-      <div class="section-title">Clasificación de las Ligas (Auto-actualizadas)</div>
+      <div class="section-title">Clasificación de las Ligas</div>
+
+      <div id="standings-updated" style="color: var(--text-muted); font-size: 0.95rem; margin: -0.6rem 0 1.2rem 1rem;">Actualizado: 20/10/2026 · tras la jornada 1</div>
 
       <div class="standings-4col-grid">
         <!-- TABLA VPCL -->
@@ -527,20 +532,20 @@
           <table class="mini-table">
             <thead><tr><th>#</th><th style="text-align: left;">Equipo</th><th>PJ</th><th>DG</th><th>PTS</th></tr></thead>
             <tbody id="standings-vpcl-body">
-              <tr class="highlight-nyto"><td>1</td><td class="team-name-cell"><img src="logo.png" alt="Nyto" width="16" height="16" style="border-radius: 50%;" onerror="this.style.display='none';">NYTO eSports</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>2</td><td class="team-name-cell">Rikisimo Splash</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>3</td><td class="team-name-cell">Novaskil FC</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>4</td><td class="team-name-cell">Futbol Papa FC</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>5</td><td class="team-name-cell">NyxLegionFC</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>6</td><td class="team-name-cell">Sinsajo Imperial</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>7</td><td class="team-name-cell">Prime Kronos</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>8</td><td class="team-name-cell">Athletic Vortex</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>9</td><td class="team-name-cell">Águilas Doradas</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>10</td><td class="team-name-cell">Plaza Barcelona</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>11</td><td class="team-name-cell">ADICTOS CF</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>12</td><td class="team-name-cell">Venus Esports</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>13</td><td class="team-name-cell">RCD ROBACOBRE</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>14</td><td class="team-name-cell">Iberican Armour</td><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>1</td><td class="team-name-cell">Rikisimo Splash</td><td>1</td><td>+4</td><td>3</td></tr>
+              <tr><td>2</td><td class="team-name-cell">Águilas Doradas</td><td>1</td><td>+3</td><td>3</td></tr>
+              <tr><td>3</td><td class="team-name-cell">Venus Esports</td><td>1</td><td>+2</td><td>3</td></tr>
+              <tr><td>4</td><td class="team-name-cell">ADICTOS CF</td><td>1</td><td>+1</td><td>3</td></tr>
+              <tr><td>5</td><td class="team-name-cell">RCD ROBACOBRE</td><td>1</td><td>+1</td><td>3</td></tr>
+              <tr><td>6</td><td class="team-name-cell">Novaskil FC</td><td>1</td><td>+1</td><td>3</td></tr>
+              <tr><td>7</td><td class="team-name-cell">Prime Kronos</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>8</td><td class="team-name-cell">TH Original FC</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>9</td><td class="team-name-cell">Sinsajo Imperial</td><td>1</td><td>-1</td><td>0</td></tr>
+              <tr><td>10</td><td class="team-name-cell">Futbol Papa FC</td><td>1</td><td>-1</td><td>0</td></tr>
+              <tr><td>11</td><td class="team-name-cell">Iberican Armour</td><td>1</td><td>-1</td><td>0</td></tr>
+              <tr><td>12</td><td class="team-name-cell">ElBayo</td><td>1</td><td>-2</td><td>0</td></tr>
+              <tr><td>13</td><td class="team-name-cell">Athletic Vortex</td><td>1</td><td>-3</td><td>0</td></tr>
+              <tr class="highlight-nyto"><td>14</td><td class="team-name-cell"><img src="logo.png" alt="Nyto" width="16" height="16" style="border-radius: 50%;" onerror="this.style.display='none';">NYTO eSports</td><td>1</td><td>-4</td><td><strong>0</strong></td></tr>
             </tbody>
           </table>
         </div>
@@ -551,18 +556,18 @@
           <table class="mini-table">
             <thead><tr><th>#</th><th style="text-align: left;">Equipo</th><th>PJ</th><th>DG</th><th>PTS</th></tr></thead>
             <tbody id="standings-afj-body">
-              <tr class="highlight-nyto"><td>1</td><td class="team-name-cell"><img src="logo.png" alt="Nyto" width="16" height="16" style="border-radius: 50%;" onerror="this.style.display='none';">NYTO eSports</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>2</td><td class="team-name-cell">Jwalkers eSport</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>3</td><td class="team-name-cell">Molino eSports</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>4</td><td class="team-name-cell">Proeco eSports</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>5</td><td class="team-name-cell">Veridian eClub</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>6</td><td class="team-name-cell">Santamaría FC</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>7</td><td class="team-name-cell">XI Esports</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>8</td><td class="team-name-cell">Blessed club</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>9</td><td class="team-name-cell">Guanchester City</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>10</td><td class="team-name-cell">Wabi sabi</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>11</td><td class="team-name-cell">MSFS eSports</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>12</td><td class="team-name-cell">Aurum Gold</td><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>1</td><td class="team-name-cell">Guanchester City</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>2</td><td class="team-name-cell">Santamaría FC</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>3</td><td class="team-name-cell">Proeco eSports</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr class="highlight-nyto"><td>4</td><td class="team-name-cell"><img src="logo.png" alt="Nyto" width="16" height="16" style="border-radius: 50%;" onerror="this.style.display='none';">NYTO eSports</td><td>1</td><td>0</td><td><strong>1</strong></td></tr>
+              <tr><td>5</td><td class="team-name-cell">Veridian eClub</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>6</td><td class="team-name-cell">Molino eSports</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>7</td><td class="team-name-cell">MSFS eSports</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>8</td><td class="team-name-cell">Jwalkers eSport</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>9</td><td class="team-name-cell">Wabi sabi</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>10</td><td class="team-name-cell">Blessed club</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>11</td><td class="team-name-cell">Aurum Gold</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>12</td><td class="team-name-cell">XI Esports</td><td>1</td><td>0</td><td>1</td></tr>
             </tbody>
           </table>
         </div>
@@ -582,18 +587,18 @@
           <table class="mini-table">
             <thead><tr><th>#</th><th style="text-align: left;">Equipo</th><th>PJ</th><th>DG</th><th>PTS</th></tr></thead>
             <tbody id="standings-ecl-body">
-              <tr class="highlight-nyto"><td>1</td><td class="team-name-cell"><img src="logo.png" alt="Nyto" width="16" height="16" style="border-radius: 50%;" onerror="this.style.display='none';">NYTO eSports</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>2</td><td class="team-name-cell">RB United 24</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>3</td><td class="team-name-cell">Iberican Armour</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>4</td><td class="team-name-cell">Coruña eSports</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>5</td><td class="team-name-cell">Zryn eSports</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>6</td><td class="team-name-cell">Spartan Warrior</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>7</td><td class="team-name-cell">Rikisimo Splash</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>8</td><td class="team-name-cell">Black Owls FC</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>9</td><td class="team-name-cell">DreamTeam CPG</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>10</td><td class="team-name-cell">BlackDr4gons</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>11</td><td class="team-name-cell">Veridian eClub</td><td>0</td><td>0</td><td>0</td></tr>
-              <tr><td>12</td><td class="team-name-cell">Spartans Elevens</td><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>1</td><td class="team-name-cell">Zryn eSports</td><td>1</td><td>+2</td><td>3</td></tr>
+              <tr class="highlight-nyto"><td>2</td><td class="team-name-cell"><img src="logo.png" alt="Nyto" width="16" height="16" style="border-radius: 50%;" onerror="this.style.display='none';">NYTO eSports</td><td>1</td><td>0</td><td><strong>1</strong></td></tr>
+              <tr><td>3</td><td class="team-name-cell">Veridian eClub</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>4</td><td class="team-name-cell">Coruña eSports</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>5</td><td class="team-name-cell">DreamTeam CPG</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>6</td><td class="team-name-cell">BlackDr4gons</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>7</td><td class="team-name-cell">Spartans Elevens</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>8</td><td class="team-name-cell">RB United 24</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>9</td><td class="team-name-cell">Iberican Armour</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>10</td><td class="team-name-cell">Rikisimo Splash</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>11</td><td class="team-name-cell">FC Tiempo Extra</td><td>1</td><td>0</td><td>1</td></tr>
+              <tr><td>12</td><td class="team-name-cell">Black Owls FC</td><td>1</td><td>-2</td><td>0</td></tr>
             </tbody>
           </table>
         </div>
@@ -609,15 +614,15 @@
         <div class="league-column">
           <div class="league-column-header"><span class="league-title">VPCL</span><span class="league-time-badge">22:20</span></div>
           <div class="matches-list" id="matches-vpcl">
-            <div class="match-card-mini" data-date="19/10" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 1 • 19/10</span></div><span class="time-soft-red">22:20 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">Rikisimo Splash</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
+            <div class="match-card-mini" data-date="19/10" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-red"></span><span>Jornada 1 • 19/10</span></div><span class="time-soft-red">22:20 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">Rikisimo Splash</span><span class="match-score-badge">7 - 3</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="20/10" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 2 • 20/10</span></div><span class="time-soft-red">22:20 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">Novaskil FC</span></div></div>
             <div class="match-card-mini" data-date="21/10" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 3 • 21/10</span></div><span class="time-soft-red">22:20 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">Futbol Papa FC</span></div></div>
-            <div class="match-card-mini" data-date="26/10" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 4 • 26/10</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">NyxLegionFC</span></div></div>
+            <div class="match-card-mini" data-date="26/10" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 4 • 26/10</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">ElBayo</span></div></div>
             <div class="match-card-mini" data-date="27/10" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 5 • 27/10</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">Sinsajo Imperial</span></div></div>
             <div class="match-card-mini" data-date="28/10" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 6 • 28/10</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">Prime Kronos</span></div></div>
             <div class="match-card-mini" data-date="29/10" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 7 • 29/10</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">Athletic Vortex</span></div></div>
             <div class="match-card-mini" data-date="02/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 8 • 02/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">Águilas Doradas</span></div></div>
-            <div class="match-card-mini" data-date="03/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 9 • 03/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">Plaza Barcelona</span></div></div>
+            <div class="match-card-mini" data-date="03/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 9 • 03/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">TH Original FC</span></div></div>
             <div class="match-card-mini" data-date="04/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 10 • 04/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">ADICTOS CF</span></div></div>
             <div class="match-card-mini" data-date="09/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 11 • 09/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">Venus Esports</span></div></div>
             <div class="match-card-mini" data-date="10/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 12 • 10/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">RCD ROBACOBRE</span></div></div>
@@ -625,12 +630,12 @@
             <div class="match-card-mini" data-date="16/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 14 • 16/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">Rikisimo Splash</span></div></div>
             <div class="match-card-mini" data-date="17/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 15 • 17/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">Novaskil FC</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="18/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 16 • 18/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">Futbol Papa FC</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
-            <div class="match-card-mini" data-date="23/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 17 • 23/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NyxLegionFC</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
+            <div class="match-card-mini" data-date="23/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 17 • 23/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">ElBayo</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="24/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 18 • 24/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">Sinsajo Imperial</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="25/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 19 • 25/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">Prime Kronos</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="30/11" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 20 • 30/11</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">Athletic Vortex</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="01/12" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 21 • 01/12</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">Águilas Doradas</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
-            <div class="match-card-mini" data-date="02/12" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 22 • 02/12</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">Plaza Barcelona</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
+            <div class="match-card-mini" data-date="02/12" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 22 • 02/12</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">TH Original FC</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="09/12" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 23 • 09/12</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">ADICTOS CF</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="14/12" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 24 • 14/12</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">Venus Esports</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="15/12" data-league="VPCL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 25 • 15/12</span></div><span class="time-soft-red">22:20 CET</span></div><div class="match-teams-row"><span class="team-name-text left">RCD ROBACOBRE</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
@@ -642,7 +647,7 @@
         <div class="league-column">
           <div class="league-column-header"><span class="league-title">AFJ</span><span class="league-time-badge">22:40</span></div>
           <div class="matches-list" id="matches-afj">
-            <div class="match-card-mini" data-date="19/10" data-league="AFJ"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 1 • 19/10</span></div><span class="time-soft-red">22:40 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">Jwalkers eSport</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
+            <div class="match-card-mini" data-date="19/10" data-league="AFJ"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-orange"></span><span>Jornada 1 • 19/10</span></div><span class="time-soft-red">22:40 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">Jwalkers eSport</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="20/10" data-league="AFJ"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 2 • 20/10</span></div><span class="time-soft-red">22:40 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">Molino eSports</span></div></div>
             <div class="match-card-mini" data-date="21/10" data-league="AFJ"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 3 • 21/10</span></div><span class="time-soft-red">22:40 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">Proeco eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="26/10" data-league="AFJ"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 4 • 26/10</span></div><span class="time-soft-red">22:40 CET</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">Veridian eClub</span></div></div>
@@ -677,7 +682,7 @@
         <div class="league-column">
           <div class="league-column-header"><span class="league-title">ECL</span><span class="league-time-badge">23:40</span></div>
           <div class="matches-list" id="matches-ecl">
-            <div class="match-card-mini" data-date="19/10" data-league="ECL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 1 • 19/10</span></div><span class="time-soft-red">23:40 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">RB United 24</span></div></div>
+            <div class="match-card-mini" data-date="19/10" data-league="ECL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-orange"></span><span>Jornada 1 • 19/10</span></div><span class="time-soft-red">23:40 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">NYTO eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">RB United 24</span></div></div>
             <div class="match-card-mini" data-date="20/10" data-league="ECL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 2 • 20/10</span></div><span class="time-soft-red">23:40 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">Iberican Armour</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="21/10" data-league="ECL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 3 • 21/10</span></div><span class="time-soft-red">23:40 CEST</span></div><div class="match-teams-row"><span class="team-name-text left">Coruña eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
             <div class="match-card-mini" data-date="26/10" data-league="ECL"><div class="match-date-header"><div class="match-status-row"><span class="match-led led-blue"></span><span>Jornada 4 • 26/10</span></div><span class="time-soft-red">23:40 CET</span></div><div class="match-teams-row"><span class="team-name-text left">Zryn eSports</span><span class="match-score-badge">VS</span><span class="team-name-text right">NYTO eSports</span></div></div>
@@ -915,15 +920,18 @@
 
     /* CARGA AUTOMÁTICA DE CLASIFICACIONES DESDE JSON */
     function loadAutoStandings() {
-      fetch('clasificaciones.json')
-        .then(res => res.json())
+      // cache: 'no-store' evita que el navegador enseñe una versión antigua del JSON
+      fetch('clasificaciones.json', { cache: 'no-store' })
+        .then(res => { if (!res.ok) throw new Error('HTTP ' + res.status); return res.json(); })
         .then(data => {
           if (data.vpcl) renderTable('standings-vpcl-body', data.vpcl);
           if (data.afj) renderTable('standings-afj-body', data.afj);
           if (data.ecl) renderTable('standings-ecl-body', data.ecl);
+          const up = document.getElementById('standings-updated');
+          if (up && data.actualizado) up.textContent = 'Actualizado: ' + data.actualizado;
         })
         .catch(err => {
-          console.log('Cargando clasificaciones por defecto...');
+          console.warn('No se pudo cargar clasificaciones.json, se muestran las clasificaciones incluidas en la página.', err);
         });
     }
 
@@ -957,14 +965,14 @@
       cadizceuta: { name: "cadizceuta", num: "#81", pos: "DFC", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: "Veterano de Guerra, Carnicero &amp; Contundencia", age: "45 Años", foot: "Zurdo", img: "cadizceuta.jpeg", bio: "El auténtico carnicero y veterano de guerra de la zaga de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
       chr21a: { name: "chr21a", num: "#3", pos: "DFC", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: '<span class="captain-armband">C</span> Leyenda del Club, Carácter &amp; Sangre Fría', age: "34 Años", foot: "Diestro", img: "chr21a.jpeg", bio: "La auténtica leyenda viva de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
       whaleskillers: { name: "whaleskillers", num: "#13", pos: "CAR", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: '<span class="captain-armband">C</span> Hombre de Club, Equilibrio &amp; Paciencia', age: "32 Años", foot: "Zurdo", img: "whaleskillers.jpeg", bio: "El ancla, temple y verdadero hombre de club de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
-      cerealsquash: { name: "CerealSquash664", num: "#9", pos: "DEL", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: '<span class="captain-armband">C</span> Delantero Referencia &amp; Killer de Área', age: "33 Años", foot: "Diestro", img: "CerealSquash664.jpeg", bio: "El 'killer' de área y la referencia indiscutible del ataque de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
+      cerealsquash: { name: "CerealSquash664", num: "#9", pos: "DEL", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: '<span class="captain-armband">C</span> Delantero Referencia &amp; Killer de Área', age: "33 Años", foot: "Diestro", img: "CerealSquash664.jpeg", bio: "El 'killer' de área y la referencia indiscutible del ataque de Nyto eSports.", goals: { afj: 0, vpcl: 2, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
       nytoilcapitano: { name: "NytoilCapitano", num: "#10", pos: "MC", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: '<span class="manager-shield">M</span> <span class="captain-armband">C</span> Dueño &amp; Manager', age: "29 Años", foot: "Diestro", img: "NytoilCapitano.jpeg", bio: "El alma, dueño y jerarca absoluto de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
       monkeydgameer: { name: "Monkey_D_gameer", num: "#92", pos: "MC", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: "Cerebro Silencioso, Visión &amp; Polivalencia", age: "34 Años", foot: "Diestro", img: "Monkey_D_gameer.jpg", bio: "El comodín táctico y la brújula serena en el centro del campo de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
       agrafeee: { name: "Agrafeee-", num: "#26", pos: "POR", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: "Agilidad Felina &amp; Santo Protector", age: "17 Años", foot: "Ambidiestro", img: "Agrafeee-.jpeg", bio: "El guardián definitivo y la última línea defensiva de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
       samu: { name: "zSxmueeel-", num: "#99", pos: "DFC", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: "Muro Defensivo", age: "21 Años", foot: "Diestro", img: "samu.jpeg", bio: "Cierre infranqueable en la zaga de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
       xabier: { name: "zXabieer-", num: "#33", pos: "DFC", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: "Prodigio Zurdo &amp; Proyección", age: "15 Años", foot: "Zurdo", img: "xabier.jpeg", bio: "La joven promesa de Nyto eSports y el benjamín del vestuario.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
       mariette: { name: "m4riiette", num: "#14", pos: "CAR", nation: '<img src="https://flagcdn.com/bg.svg" width="20" alt="Bulgaria"> Bulgaria', role: "Puñal por Banda &amp; Velocidad Absoluta", age: "24 Años", foot: "Zurdo", img: "m4riiette.jpeg", bio: "El velocista búlgaro de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
-      rossetee: { name: "ROSSETEE_23", num: "#23", pos: "MC", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: "Maestro de Magia &amp; Robos en la Sombra", age: "24 Años", foot: "Diestro", img: "ROSSETEE_23.jpeg", bio: "La elegancia hecha mediocentro en Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
+      rossetee: { name: "ROSSETEE_23", num: "#23", pos: "MC", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: "Maestro de Magia &amp; Robos en la Sombra", age: "24 Años", foot: "Diestro", img: "ROSSETEE_23.jpeg", bio: "La elegancia hecha mediocentro en Nyto eSports.", goals: { afj: 0, vpcl: 1, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
       diegogarcia: { name: "DiegoGarciaC_10", num: "#20", pos: "MC", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: "Cerebro Total &amp; Arquitecto del Último Pase", age: "35 Años", foot: "Diestro", img: "DiegoGarciaC_10.jpeg", bio: "El veterano y metrónomo del mediocampo de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
       elpanditaa: { name: "ELPANDITAA", num: "#12", pos: "CAR", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: "Dominador Aéreo &amp; Llegador de Segunda Línea", age: "21 Años", foot: "Diestro", img: "ELPANDITAA.jpeg", bio: "Un despliegue físico y técnico imperial en el mediocampo de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } },
       junior: { name: "juniOorx7", num: "#7", pos: "DEL", nation: '<img src="https://flagcdn.com/es.svg" width="20" alt="España"> España', role: "Asesino Silencioso &amp; Depredador", age: "30 Años", foot: "Diestro", img: "juniOorx7.jpeg", bio: "El ariete sigiloso de Nyto eSports.", goals: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, assists: { afj: 0, vpcl: 0, vpg: 0, ecl: 0 }, ratings: { afj: 0.0, vpcl: 0.0, vpg: 0.0, ecl: 0.0 } }
