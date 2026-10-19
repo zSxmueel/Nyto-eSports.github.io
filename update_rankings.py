@@ -18,11 +18,12 @@ def fetch_ranking(url):
         pos = 1
         for row in rows:
             cols = row.find_all('td')
-            if len(cols) >= 4:
+            # Verificamos que tenga al menos las 10 columnas de la tabla oficial
+            if len(cols) >= 10:
                 name = cols[1].text.strip()
                 pj = int(cols[2].text.strip() or 0)
-                dg = int(cols[3].text.strip() or 0)
-                pts = int(cols[4].text.strip() or 0) if len(cols) > 4 else 0
+                dg = int(cols[8].text.strip() or 0)  # Columna DG real
+                pts = int(cols[9].text.strip() or 0) # Columna PTS real
                 is_nyto = "nyto" in name.lower()
                 teams.append({"pos": pos, "name": name, "pj": pj, "dg": dg, "pts": pts, "isNyto": is_nyto})
                 pos += 1
