@@ -107,6 +107,15 @@
     .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; position: relative; transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) !important; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); }
     .card:hover { transform: translateY(-6px) !important; border-color: var(--primary) !important; box-shadow: 0 0 25px var(--primary-glow), 0 10px 25px rgba(0, 0, 0, 0.7) !important; }
 
+    /* INICIO: las 3 tarjetas con la misma altura; "Partidos de Hoy" se desplaza dentro de su tarjeta */
+    .grid-3 > .card { height: 540px; display: flex; flex-direction: column; }
+    #today-matches-container { flex: 1; min-height: 0; overflow-y: auto; padding-right: 6px; }
+    #today-matches-container::-webkit-scrollbar { width: 4px; }
+    #today-matches-container::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+    @media (max-width: 800px) {
+      .grid-3 > .card { height: auto; }
+      #today-matches-container { max-height: 440px; flex: none; }
+    }
     .comp-list { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem; }
     .comp-item { display: flex; justify-content: space-between; align-items: center; background: #141722; padding: 0.7rem 1rem; border-radius: 8px; border-left: 3px solid var(--primary); transition: all 0.3s ease !important; }
     .comp-item:hover { background: #1a1e2d; border-left-width: 6px !important; box-shadow: 0 0 15px rgba(255, 26, 42, 0.3) !important; transform: translateX(4px) !important; }
